@@ -73,22 +73,36 @@
 
 <script>
     function submitAnswer() {
-        // Retrieve user selected answer
-        var selectedAnswer = document.querySelector('input[name="answer"]:checked').value;
+        // Récupérer le nombre de clics sur le bouton submit depuis sessionStorage
+        var submitCount = sessionStorage.getItem('submitCount');
+        if (!submitCount) {
+            submitCount = 0;
+        }
+        submitCount = parseInt(submitCount);
 
-        // Retrieve correct answer ID
-        var correctAnswerId = {{ correct_answer_id }};
+        // Incrémenter le nombre de clics sur le bouton submit
+        submitCount++;
+        sessionStorage.setItem('submitCount', submitCount);
 
-        // Check if the selected answer matches the correct answer ID
-        if (selectedAnswer == correctAnswerId) {
-            alert('Bonne réponse! Passage à la prochaine question...');
-            // Redirect user to next question after displaying alert
-            window.location.href = '/quiz';
+        // Si le nombre de clics sur le bouton submit atteint 5, rediriger vers la page de score
+        if (submitCount >= 5) {
+            window.location.href = '/end';
         } else {
-            alert('Mauvaise réponse!');
+            // Récupérer la réponse sélectionnée par l'utilisateur et le traitement habituel
+            var selectedAnswerId = document.querySelector('input[name="answer"]:checked').value;
+            var correctAnswerId = {{ correct_answer_id }};
+
+            if (selectedAnswerId == correctAnswerId) {
+                alert('Bonne réponse! Passage à la prochaine question...');
+            } else {
+                alert('Mauvaise réponse!');
+            }
+
+            // Redirection vers la prochaine question
             window.location.href = '/quiz';
         }
     }
+
 </script>
 
 </body>

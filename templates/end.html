@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fin!!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 30px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout-button,
+        .replay-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .logout-button:hover,
+        .replay-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Score</h2>
+    <div class="score">
+        <p>Votre partie est terminée</p>
+    </div>
+    <div class="button-container">
+        <button class="replay-button" onclick="replay()">Rejouer</button>
+        <button class="logout-button" onclick="logout()">Déconnexion</button>
+    </div>
+</div>
+
+<script>
+    function replay() {
+            // Réinitialiser le nombre de clics dans sessionStorage
+            sessionStorage.setItem('submitCount', 0);
+
+            // Rediriger vers la page de quiz pour recommencer le jeu
+            window.location.href = '/quiz';
+
+    }
+
+    function logout() {
+        fetch('/logout', {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la déconnexion :', error);
+            });
+
+    }
+</script>
+</body>
+</html>
